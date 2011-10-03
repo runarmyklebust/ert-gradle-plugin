@@ -1,0 +1,48 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+archivesBaseName = 'ert-gradle-plugin'
+group = 'com.enonic.tools'
+version = '1.0'
+
+configurations {
+
+    includeLib
+    compile.extendsFrom includeLib
+}
+
+dependencies {
+
+    compile gradleApi()
+    groovy localGroovy()
+
+    includeLib 'org.apache.jackrabbit:jackrabbit-webdav:2.2.9'
+
+    includeLib 'com.google.guava:guava:10.0'
+
+    includeLib 'org.apache.commons:commons-vfs2:2.0'
+
+    includeLib 'commons-collections:commons-collections:3.2.1'
+
+    testCompile 'junit:junit:4.8'
+
+    testRuntime 'org.apache.commons:commons-compress:1.1'
+}
+
+jar {
+    from { configurations.includeLib.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+
+
+
+
+
+
+
+
