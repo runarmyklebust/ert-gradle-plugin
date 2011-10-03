@@ -3,9 +3,9 @@ package com.enonic.ert
 import com.enonic.ert.domain.LocationConvention
 import com.enonic.ert.domain.PropertiesConvention
 import com.enonic.ert.internal.BaseTask
-import com.enonic.labs.dav.client.ResourceClient
-import com.enonic.labs.dav.client.ResourceClientFactory
-import com.enonic.labs.dav.client.ResourceClientProperties
+import com.enonic.tools.ert.client.ResourceClient
+import com.enonic.tools.ert.client.ResourceClientFactory
+import com.enonic.tools.ert.client.ResourceClientProperties
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,7 +33,8 @@ class PluginClientFactory
         if ( !task.target )
         {
             client = factory.createResourceClient(locationConvention.getLocation(task.source), null, properties)
-        } else
+        }
+        else
         {
             client = factory.createResourceClient(locationConvention.getLocation(task.source), locationConvention.getLocation(task.target), properties)
         }

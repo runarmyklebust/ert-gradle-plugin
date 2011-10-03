@@ -1,6 +1,6 @@
 package com.enonic.ert.domain
 
-import com.enonic.labs.dav.client.ResourceLocation
+import com.enonic.tools.ert.client.ResourceLocation
 import org.gradle.api.NamedDomainObjectContainer
 
 /**

@@ -4,7 +4,7 @@ import com.enonic.ert.domain.LocationConvention
 import com.enonic.ert.domain.PropertiesConvention
 import com.enonic.ert.internal.BaseTask
 import com.enonic.ert.tasks.ERTListLocations
-import com.enonic.labs.dav.client.ResourceLocation
+import com.enonic.tools.ert.client.ResourceLocation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
