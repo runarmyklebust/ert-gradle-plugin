@@ -11,7 +11,7 @@ class PropertiesConvention
     String backupUrl;
     String cacheUrl;
 
-    def ERTProperties(Closure closure)
+    def ert(Closure closure)
     {
         closure.delegate = this
         closure()
