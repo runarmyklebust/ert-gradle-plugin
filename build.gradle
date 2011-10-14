@@ -1,20 +1,26 @@
 apply plugin: 'groovy'
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'maven'
+
+//apply from: 'publish.gradle'
 
 repositories {
+    mavenRepo urls: 'http://repo.enonic.com/maven'
     mavenCentral()
 }
-
 archivesBaseName = 'ert-gradle-plugin'
-group = 'com.enonic.tools'
-version = '1.0'
+group = 'com.enonic.cms.tools'
+version = '1.0-SNAPSHOT'
 
 configurations {
 
     includeLib
     compile.extendsFrom includeLib
+
+    deployerJars
 }
+
 
 dependencies {
 
@@ -32,12 +38,40 @@ dependencies {
     testCompile 'junit:junit:4.8'
 
     testRuntime 'org.apache.commons:commons-compress:1.1'
+
+    deployerJars "org.apache.maven.wagon:wagon-http:1.0-beta-2"
 }
 
 jar {
     from { configurations.includeLib.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+
+uploadArchives {
+    repositories.mavenDeployer {
+        configuration = configurations.deployerJars
+        //uniqueVersion = false
+        //uploadDescriptor = false
+        repository(url: 'http://repo.enonic.com/nexus/content/repositories/releases/') {
+            authentication(userName: 'rmy', password: '')
+        }
+        snapshotRepository(url: 'http://repo.enonic.com/nexus/content/repositories/snapshots/') {
+            authentication(userName: 'rmy', password: '')
+        }
+
+        pom.project {
+            organization {
+                name = 'Enonic AS'
+                url = 'http://www.enonic.com'
+            }
+        }
+    }
+}
+
+task publish(dependsOn: 'uploadArchives') {
+    group = 'Upload'
+    description = 'Alias for uploadArchives'
+}
 
 
 
