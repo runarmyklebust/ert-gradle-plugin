@@ -43,9 +43,15 @@ public class ResourceSelector
         throws Exception
     {
         final String fileName = fileInfo.getFile().getName().getBaseName();
+        final String filePath = fileInfo.getFile().getName().getPath();
 
         for ( Pattern matchPattern : excludePatterns )
         {
+            if ( matches( matchPattern, filePath ) )
+            {
+                return false;
+            }
+
             if ( matches( matchPattern, fileName ) )
             {
                 return false;
@@ -83,6 +89,7 @@ public class ResourceSelector
         boolean traverseFolder = true;
 
         final String folderName = fileInfo.getFile().getName().getBaseName();
+        final String folderPath = fileInfo.getFile().getName().getPath();
 
         if ( folderName.startsWith( "." ) )
         {
@@ -97,6 +104,15 @@ public class ResourceSelector
         if ( fileInfo.getDepth() >= maxDepth )
         {
             return false;
+        }
+
+        for ( Pattern matchPattern : excludePatterns )
+        {
+            if ( matches( matchPattern, folderPath ) )
+            {
+                System.out.println( "Excluded: " + folderPath );
+                return false;
+            }
         }
 
         return traverseFolder;

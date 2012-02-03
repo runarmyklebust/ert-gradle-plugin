@@ -50,6 +50,19 @@ public class ResourceClient
         this.target = target;
         this.resourceCache = resourceCache;
         this.properties = properties;
+
+        if ( source.getExcludes() == null )
+        {
+            System.out.println( "Excludes is null for source" );
+        }
+        else
+        {
+            for ( String exclude : source.getExcludes() )
+            {
+                System.out.println( "Exclude: " + exclude );
+            }
+        }
+
     }
 
     public void sync()
@@ -136,7 +149,7 @@ public class ResourceClient
 
         FileObject backupLocation = backuproot.resolveFile( backupName );
 
-        resourceCopier.copy( source.getRoot(), backupLocation );
+        resourceCopier.copy( source, backupLocation );
     }
 
     public void copyAll()
@@ -150,7 +163,7 @@ public class ResourceClient
             return;
         }
 
-        resourceCopier.copy( source.getRoot(), target.getRoot() );
+        resourceCopier.copy( source, target.getRoot() );
     }
 
 
@@ -171,7 +184,7 @@ public class ResourceClient
             fileName = StringUtils.substringAfter( fileName, sourceRootPath );
         }
 
-        ResourceFileTools.copyFile( source.getRoot(), fileName, target.getRoot() );
+        ResourceFileTools.copyFile( source, fileName, target, new DefaultResourceSelector( source, source.getExcludes() ) );
     }
 
     public void nukeCache()
@@ -194,7 +207,7 @@ public class ResourceClient
     private ResourceTree getResourceTree( ResourceLocation location )
         throws Exception
     {
-        return getResourceTree( location, new DefaultResourceSelector() );
+        return getResourceTree( location, new DefaultResourceSelector( location, location.getExcludes() ) );
     }
 
     private ResourceTree getResourceTree( ResourceLocation location, ResourceSelector resourceSelector )

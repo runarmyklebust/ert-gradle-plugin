@@ -1,6 +1,0 @@
-<providers>
-    <provider class-name="com.enonic.tools.ert.WebdavFileProvider">
-        <scheme name="webdav"/>
-    </provider>
-    <default-provider class-name="org.apache.commons.vfs.provider.url.UrlFileProvider"/>
-</providers>

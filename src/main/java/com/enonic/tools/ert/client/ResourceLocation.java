@@ -1,5 +1,7 @@
 package com.enonic.tools.ert.client;
 
+import java.util.List;
+
 import org.apache.commons.vfs2.FileObject;
 
 /**
@@ -13,6 +15,8 @@ public class ResourceLocation
     private String name;
 
     private String url;
+
+    private List<String> excludes;
 
     private boolean readOnly = false;
 
@@ -139,5 +143,15 @@ public class ResourceLocation
         buf.append( url );
 
         return buf.toString();
+    }
+
+    public List<String> getExcludes()
+    {
+        return excludes;
+    }
+
+    public void setExcludes( List<String> excludes )
+    {
+        this.excludes = excludes;
     }
 }

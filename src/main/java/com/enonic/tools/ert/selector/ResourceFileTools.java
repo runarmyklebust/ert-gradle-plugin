@@ -8,6 +8,7 @@ import org.apache.commons.vfs2.FileSelector;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileType;
 
+import com.enonic.tools.ert.client.ResourceLocation;
 import com.enonic.tools.ert.exception.DeleteResourceException;
 import com.enonic.tools.ert.exception.ResourceNotFoundException;
 
@@ -22,24 +23,24 @@ public class ResourceFileTools
 
     private final static Logger LOG = Logger.getLogger( ResourceFileTools.class.getName() );
 
-    public static void copyFile( FileObject sourceRoot, String fileRelativePath, FileObject targetRoot )
+    public static void copyFile( ResourceLocation source, String fileRelativePath, ResourceLocation target, ResourceSelector selector )
         throws Exception
     {
-        String sourceBaseName = getBasePath( sourceRoot );
-        String targetBaseName = getBasePath( targetRoot );
+        String sourceBaseName = getBasePath( source.getRoot() );
+        String targetBaseName = getBasePath( target.getRoot() );
 
-        FileObject sourceFile = sourceRoot.resolveFile( sourceBaseName + "/" + fileRelativePath );
+        FileObject sourceFile = source.getRoot().resolveFile( sourceBaseName + "/" + fileRelativePath );
 
         if ( !sourceFile.exists() )
         {
-            throw new ResourceNotFoundException( sourceRoot, fileRelativePath );
+            throw new ResourceNotFoundException( source.getRoot(), fileRelativePath );
         }
 
         System.out.println( "Copy sourcefile: " + sourceFile.getName() + " (" + Boolean.valueOf( sourceFile.exists() ).toString() + ")" );
 
-        FileObject targetFile = targetRoot.resolveFile( targetBaseName + "/" + fileRelativePath );
+        FileObject targetFile = target.getRoot().resolveFile( targetBaseName + "/" + fileRelativePath );
 
-        targetFile.copyFrom( sourceFile, new DefaultResourceSelector() );
+        targetFile.copyFrom( sourceFile, selector );
     }
 
     public static boolean deleteFile( FileObject targetRoot, String fileRelativePath, boolean allowDeleteRecursive )

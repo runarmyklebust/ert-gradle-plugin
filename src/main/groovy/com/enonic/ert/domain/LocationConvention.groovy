@@ -16,6 +16,8 @@ class LocationConvention
     String source
     String target
 
+    List<String> excludes;
+
     boolean testRun
 
     LocationConvention(NamedDomainObjectContainer<ResourceLocation> locations)
@@ -36,6 +38,7 @@ class LocationConvention
     def location(Map<String, String> values)
     {
         ResourceLocation resourceLocation = new ResourceLocation(values.name, values.url);
+        resourceLocation.setExcludes(excludes);
         locations.add(resourceLocation);
     }
 

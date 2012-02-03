@@ -59,7 +59,7 @@ public class ResourceCache
 
         System.out.println( "getResourceTree cachedTreeName: " + cachedTree.getName().getPath() );
 
-        ResourceSelector resourceSelector = new DefaultResourceSelector();
+        ResourceSelector resourceSelector = new DefaultResourceSelector( location, location.getExcludes() );
 
         System.out.println( "Fetching resourceTree" );
         ResourceTree resourceTree = doCreateResourceTree( locationRoot, resourceSelector );

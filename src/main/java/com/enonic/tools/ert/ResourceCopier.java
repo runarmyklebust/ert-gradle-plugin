@@ -13,6 +13,7 @@ import org.apache.commons.vfs2.FileUtil;
 import org.apache.commons.vfs2.NameScope;
 import org.apache.commons.vfs2.Selectors;
 
+import com.enonic.tools.ert.client.ResourceLocation;
 import com.enonic.tools.ert.selector.DefaultResourceSelector;
 import com.enonic.tools.ert.selector.ResourceSelector;
 import com.enonic.tools.ert.utils.ResourceFileUtils;
@@ -34,13 +35,13 @@ public class ResourceCopier
         this.tryKeepLastModifiedTime = tryKeepLastModifiedTime;
     }
 
-    public void copy( FileObject source, FileObject target )
+    public void copy( ResourceLocation source, FileObject target )
         throws Exception
     {
-        DefaultResourceSelector selector = new DefaultResourceSelector();
+        DefaultResourceSelector selector = new DefaultResourceSelector( source, source.getExcludes() );
         selector.setMinDepth( 1 );
 
-        copyFrom( source, target, selector );
+        copyFrom( source.getRoot(), target, selector );
     }
 
     public void copy( FileObject source, FileObject target, ResourceSelector resourceSelector )
@@ -70,13 +71,13 @@ public class ResourceCopier
                                            null );
         }
 
-        LOG.info( "Finding files to copy from source: " + source.getName().toString() );
+        System.out.println( "Finding files to copy from source: " + source.getName().toString() );
 
         // Locate the files to copy across
         final ArrayList files = new ArrayList();
         source.findFiles( selector, false, files );
 
-        LOG.info( "Found " + files.size() + " to copy..." );
+        System.out.println( "Found " + files.size() + " to copy..." );
 
         boolean doKeepLastModifiedTimeFiles = false;
 

@@ -5,7 +5,9 @@ import java.util.Map;
 import com.google.common.collect.MapDifference;
 
 import com.enonic.tools.ert.client.ResourceLocation;
+import com.enonic.tools.ert.selector.DefaultResourceSelector;
 import com.enonic.tools.ert.selector.ResourceFileTools;
+import com.enonic.tools.ert.selector.ResourceSelector;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,13 +54,15 @@ public class ResourceTreeDiffResolver
     {
         Map<String, MapDifference.ValueDifference<String>> differences = compareResult.getDiffMap().entriesDiffering();
 
+        ResourceSelector selector = new DefaultResourceSelector( source, source.getExcludes() );
+
         for ( String fileName : differences.keySet() )
         {
             System.out.println( "Overwrite changed file: " + fileName );
 
             if ( !printOnly )
             {
-                ResourceFileTools.copyFile( source.getRoot(), fileName, target.getRoot() );
+                ResourceFileTools.copyFile( source, fileName, target, selector );
             }
         }
     }
@@ -84,13 +88,15 @@ public class ResourceTreeDiffResolver
     {
         Map<String, String> sourceOnlyEntries = compareResult.getDiffMap().entriesOnlyOnLeft();
 
+        ResourceSelector selector = new DefaultResourceSelector( source, source.getExcludes() );
+
         for ( String sourceRelativeName : sourceOnlyEntries.keySet() )
         {
             System.out.println( "Adding files from source missing on target: " + sourceRelativeName );
 
             if ( !printOnly )
             {
-                ResourceFileTools.copyFile( source.getRoot(), sourceRelativeName, target.getRoot() );
+                ResourceFileTools.copyFile( source, sourceRelativeName, target, selector );
             }
 
         }
