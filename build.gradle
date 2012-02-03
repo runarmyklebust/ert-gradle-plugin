@@ -11,7 +11,7 @@ repositories {
 }
 archivesBaseName = 'ert-gradle-plugin'
 group = 'com.enonic.cms.tools'
-version = '1.0-SNAPSHOT'
+version = '1.0.1-SNAPSHOT'
 
 configurations {
 
@@ -46,16 +46,19 @@ jar {
     from { configurations.includeLib.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+dependencies {
+    deployerJars "org.apache.maven.wagon:wagon-http:2.0"
+}
 
 uploadArchives {
     repositories.mavenDeployer {
         configuration = configurations.deployerJars
         //uniqueVersion = false
         //uploadDescriptor = false
-        repository(url: 'http://repo.enonic.com/nexus/content/repositories/releases/') {
+        repository(url: 'http://repo.enonic.com/nexus/content/repositories/public-release/') {
             authentication(userName: 'rmy', password: '')
         }
-        snapshotRepository(url: 'http://repo.enonic.com/nexus/content/repositories/snapshots/') {
+        snapshotRepository(url: 'http://repo.enonic.com/nexus/content/repositories/public-snapshot/') {
             authentication(userName: 'rmy', password: '')
         }
 
