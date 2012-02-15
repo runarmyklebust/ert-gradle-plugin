@@ -39,7 +39,7 @@ public class ERTPlugin implements Plugin<Project>
         project.task('sync', description: 'sync changes between source to target', type: ERTSync)
         */
 
-        project.tasks.withType(BaseTask.class).allTasks {
+        project.tasks.withType(BaseTask.class).all {
             group = "Enonic Resource Tool"
         }
     }

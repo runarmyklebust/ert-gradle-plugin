@@ -6,7 +6,7 @@ apply plugin: 'maven'
 //apply from: 'publish.gradle'
 
 repositories {
-    mavenRepo urls: 'http://repo.enonic.com/maven'
+    mavenRepo url: 'http://repo.enonic.com/maven'
     mavenCentral()
 }
 archivesBaseName = 'ert-gradle-plugin'
@@ -26,6 +26,8 @@ dependencies {
 
     compile gradleApi()
     groovy localGroovy()
+
+    includeLib 'commons-lang:commons-lang:2.6'
 
     includeLib 'org.apache.jackrabbit:jackrabbit-webdav:2.2.9'
 

@@ -1,0 +1,118 @@
+apply from: 'config.gradle'
+
+buildscript {
+    repositories {
+        mavenRepo urls: 'http://repo.enonic.com/maven'
+    }
+
+    dependencies {
+        classpath 'com.enonic.cms.tools:ert-gradle-plugin:1.0-SNAPSHOT'
+    }
+}
+
+
+ert {
+    cacheUrl = "file://Users/rmh/Dev/Workspace/Java/LABS/.cache"
+    backupUrl = "file://Users/rmh/Dev/Workspace/Java/LABS/.backup"
+}
+
+locations {
+
+    local {
+        url = "file://Users/rmh/Dev/Workspace/Java/Enonic/xslt/packages_4_6"
+    }
+
+    testCreateNew {
+        url = "file://Users/rmh/Dev/Workspace/Java/Enonic/xslt/testCreateNew"
+    }
+
+    remote {
+        url = "webdav://admin:password@vtnode1:8180/cms-commando-unstable-packages/dav"
+        cacheLocal = true
+        readOnly = false
+        //deleteMissingOnSync = false
+    }
+
+    localhost {
+        url = "webdav://admin:password@localhost:8080/cms/dav"
+        cacheLocal = true
+        readOnly = false
+        //deleteMissingOnSync = false
+    }
+
+    versiontest_4_6 {
+        url = "webdav://admin:password@vtnode2:8080/cms-46ce-unstable-enonic/dav"
+        cacheLocal = true
+    }
+
+    versiontest_4_5 {
+        url = "webdav://admin:password@vtnode1:8280/cms-commando-stable-packages/dav"
+        cacheLocal = true
+    }
+
+    versiontest_4_4 {
+        url = "webdav://admin:password@versiontest:9580/cms-bubble-stable-packages/dav"
+        cacheLocal = true
+    }
+
+    test {
+        url = "file://Users/rmh/Dev/Workspace/Java/Enonic/xslt/packages_4_6"
+    }
+}
+
+task syncLocalhost(type: ERTSync) {
+    source = "local"
+    target = "localhost"
+}
+
+task syncLocalhostFromVersiontest(type: ERTSync) {
+    source = "versiontest_4_5"
+    target = "localhost"
+}
+
+task localDiff(type: ERTDiff) {
+    source = "local"
+    target = "localhost"
+}
+
+task localSync(type: ERTSync) {
+    source = "local"
+    target = "localhost"
+}
+
+task nukeLocal(type: ERTNukeCache) {
+    source = "localhost"
+}
+
+task nukeVersiontest(type: ERTNukeCache) {
+    source = "versiontest_4_5"
+}
+
+task backuplocal(type: ERTBackup) {
+    source = "localhost"
+}
+
+task backup(type: ERTBackup)
+task nukeCache(type: ERTNukeCache)
+task sync(type: ERTSync)
+task diff(type: ERTDiff)
+task copy(type: ERTCopy)
+
+task diffPackages(type: ERTDiff) {
+    source = "versiontest_4_4"
+    target = "versiontest_4_5"
+}
+
+task copyPackages(type: ERTCopy) {
+    fileName = "/packages"
+    source = "local"
+    target = "localhost"
+}
+
+task copyToTest(type: ERTCopy) {
+    source = "local"
+    target = "localhost"
+}
+
+
+

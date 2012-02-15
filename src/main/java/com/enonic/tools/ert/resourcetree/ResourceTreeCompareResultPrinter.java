@@ -2,7 +2,7 @@ package com.enonic.tools.ert.resourcetree;
 
 import java.util.Map;
 
-import org.apache.maven.artifact.ant.shaded.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.enonic.tools.ert.client.ResourceLocation;
 
